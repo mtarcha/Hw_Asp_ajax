@@ -1,0 +1,16 @@
+﻿@model MvcApplication12222.Models.Producer
+@{
+    ViewBag.Title = "AddProd";
+}
+
+
+
+@using (Html.BeginForm("SaveProducer", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{ 
+   <div class="col-sm-5">
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Name" })
+            
+        @Html.DropDownListFor(x=>x.LocationID,(List<SelectListItem>)ViewBag.List)
+           <button type="submit" class="btn btn-primary">Submit</button>
+       
+    </div>}

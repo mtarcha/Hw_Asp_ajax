@@ -1,0 +1,21 @@
+﻿@model MvcApplication12222.Models.Product
+@{
+    ViewBag.Title = "AddProd";
+}
+
+<h2>Add Prod Form</h2>
+
+
+@using (Html.BeginForm("SaveProduct", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{ 
+   <div class="col-sm-5">
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Name" })
+        @Html.TextBoxFor(x => x.Price, new { @class = "form-control", placeholder = "Price" })
+        @Html.TextBoxFor(x => x.Count, new { @class = "form-control", placeholder = "Count" })
+                   
+        @Html.DropDownListFor(x=>x.ProducerID,(List<SelectListItem>)ViewBag.List)
+           <button type
+               ="submit" class="btn btn-primary">Submit</button>
+       
+    </div>
+}

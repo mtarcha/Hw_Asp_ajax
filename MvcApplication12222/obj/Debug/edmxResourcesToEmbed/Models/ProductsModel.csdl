@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DB_myModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="DB_myEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="Locations" EntityType="DB_myModel.Location" />
+    <EntitySet Name="Producers" EntityType="DB_myModel.Producer" />
+    <EntitySet Name="Products" EntityType="DB_myModel.Product" />
+    <AssociationSet Name="FK_Producers_ToLocation" Association="DB_myModel.FK_Producers_ToLocation">
+      <End Role="Locations" EntitySet="Locations" />
+      <End Role="Producers" EntitySet="Producers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Products_ToProducers" Association="DB_myModel.FK_Products_ToProducers">
+      <End Role="Producers" EntitySet="Producers" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Location">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="Producers" Relationship="DB_myModel.FK_Producers_ToLocation" FromRole="Locations" ToRole="Producers" />
+  </EntityType>
+  <EntityType Name="Producer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="LocationID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Location" Relationship="DB_myModel.FK_Producers_ToLocation" FromRole="Producers" ToRole="Locations" />
+    <NavigationProperty Name="Products" Relationship="DB_myModel.FK_Products_ToProducers" FromRole="Producers" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="Count" Type="Int32" Nullable="false" />
+    <Property Name="ProducerID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Producer" Relationship="DB_myModel.FK_Products_ToProducers" FromRole="Products" ToRole="Producers" />
+  </EntityType>
+  <Association Name="FK_Producers_ToLocation">
+    <End Role="Locations" Type="DB_myModel.Location" Multiplicity="1" />
+    <End Role="Producers" Type="DB_myModel.Producer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locations">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Producers">
+        <PropertyRef Name="LocationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Products_ToProducers">
+    <End Role="Producers" Type="DB_myModel.Producer" Multiplicity="1" />
+    <End Role="Products" Type="DB_myModel.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Producers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="ProducerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

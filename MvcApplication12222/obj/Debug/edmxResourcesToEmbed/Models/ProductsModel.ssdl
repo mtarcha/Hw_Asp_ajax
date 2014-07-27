@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище DB_myModel" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Хранилище DB_myModelContainer">
+    <EntitySet Name="Locations" EntityType="Хранилище DB_myModel.Locations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Producers" EntityType="Хранилище DB_myModel.Producers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Products" EntityType="Хранилище DB_myModel.Products" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Producers_ToLocation" Association="Хранилище DB_myModel.FK_Producers_ToLocation">
+      <End Role="Locations" EntitySet="Locations" />
+      <End Role="Producers" EntitySet="Producers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Products_ToProducers" Association="Хранилище DB_myModel.FK_Products_ToProducers">
+      <End Role="Producers" EntitySet="Producers" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Locations">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Producers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="LocationID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Price" Type="money" Nullable="false" />
+    <Property Name="Count" Type="int" Nullable="false" />
+    <Property Name="ProducerID" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Producers_ToLocation">
+    <End Role="Locations" Type="Хранилище DB_myModel.Locations" Multiplicity="1" />
+    <End Role="Producers" Type="Хранилище DB_myModel.Producers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locations">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Producers">
+        <PropertyRef Name="LocationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Products_ToProducers">
+    <End Role="Producers" Type="Хранилище DB_myModel.Producers" Multiplicity="1" />
+    <End Role="Products" Type="Хранилище DB_myModel.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Producers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="ProducerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

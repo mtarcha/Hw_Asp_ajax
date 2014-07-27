@@ -1,0 +1,18 @@
+﻿@model MvcApplication12222.Models.Location
+
+
+<h2>Registration Form Example</h2>
+
+@*Без указания енкрипшон формата формы - мы не сможем загружать файлы*@
+@using (Html.BeginForm("SaveLocation", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{ 
+   <div class="col-sm-5">
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Name" })
+           <button type="submit" class="btn btn-primary">Submit</button>
+       
+    </div>
+
+    
+    
+}
+

@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище DB_myModel" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="Хранилище DB_myModelContainer">
+          <EntitySet Name="Locations" EntityType="Хранилище DB_myModel.Locations" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Producers" EntityType="Хранилище DB_myModel.Producers" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Products" EntityType="Хранилище DB_myModel.Products" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Producers_ToLocation" Association="Хранилище DB_myModel.FK_Producers_ToLocation">
+            <End Role="Locations" EntitySet="Locations" />
+            <End Role="Producers" EntitySet="Producers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_ToProducers" Association="Хранилище DB_myModel.FK_Products_ToProducers">
+            <End Role="Producers" EntitySet="Producers" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Locations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Producers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="LocationID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Price" Type="money" Nullable="false" />
+          <Property Name="Count" Type="int" Nullable="false" />
+          <Property Name="ProducerID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Producers_ToLocation">
+          <End Role="Locations" Type="Хранилище DB_myModel.Locations" Multiplicity="1" />
+          <End Role="Producers" Type="Хранилище DB_myModel.Producers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Producers">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_ToProducers">
+          <End Role="Producers" Type="Хранилище DB_myModel.Producers" Multiplicity="1" />
+          <End Role="Products" Type="Хранилище DB_myModel.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ProducerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB_myModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DB_myEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Locations" EntityType="DB_myModel.Location" />
+          <EntitySet Name="Producers" EntityType="DB_myModel.Producer" />
+          <EntitySet Name="Products" EntityType="DB_myModel.Product" />
+          <AssociationSet Name="FK_Producers_ToLocation" Association="DB_myModel.FK_Producers_ToLocation">
+            <End Role="Locations" EntitySet="Locations" />
+            <End Role="Producers" EntitySet="Producers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_ToProducers" Association="DB_myModel.FK_Products_ToProducers">
+            <End Role="Producers" EntitySet="Producers" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Producers" Relationship="DB_myModel.FK_Producers_ToLocation" FromRole="Locations" ToRole="Producers" />
+        </EntityType>
+        <EntityType Name="Producer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Location" Relationship="DB_myModel.FK_Producers_ToLocation" FromRole="Producers" ToRole="Locations" />
+          <NavigationProperty Name="Products" Relationship="DB_myModel.FK_Products_ToProducers" FromRole="Producers" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Count" Type="Int32" Nullable="false" />
+          <Property Name="ProducerID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Producer" Relationship="DB_myModel.FK_Products_ToProducers" FromRole="Products" ToRole="Producers" />
+        </EntityType>
+        <Association Name="FK_Producers_ToLocation">
+          <End Role="Locations" Type="DB_myModel.Location" Multiplicity="1" />
+          <End Role="Producers" Type="DB_myModel.Producer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Producers">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_ToProducers">
+          <End Role="Producers" Type="DB_myModel.Producer" Multiplicity="1" />
+          <End Role="Products" Type="DB_myModel.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ProducerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище DB_myModelContainer" CdmEntityContainer="DB_myEntities">
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="DB_myModel.Location">
+              <MappingFragment StoreEntitySet="Locations">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Producers">
+            <EntityTypeMapping TypeName="DB_myModel.Producer">
+              <MappingFragment StoreEntitySet="Producers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="DB_myModel.Product">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+                <ScalarProperty Name="ProducerID" ColumnName="ProducerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

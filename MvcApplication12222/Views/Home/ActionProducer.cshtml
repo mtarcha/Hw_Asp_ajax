@@ -1,0 +1,83 @@
+﻿@model MvcApplication12222.Models.Producer
+@{
+    ViewBag.Title = "ActionProducer";
+}
+
+<h2>ActionProducer</h2>
+
+<div class="row" style="text-align: center; width: 100%">
+    <div class="col-md-2"></div>
+    <div class="col-md-8" style="margin: 0 auto;">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active"><a href="#list" data-toggle="tab" id="list-tab">Producer's list</a></li>
+            <li><a href="#add" data-toggle="tab" id="add-tab">Add Producer</a></li>
+        </ul>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+<div class="row" style="text-align: center; width: 100%">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 tab-content" style="margin: 0 auto;">
+        <div class="tab-pane active" id="list">
+            @foreach (var producer in ViewBag.ProducersList)
+            {
+                <div>
+                    @producer.Name
+                </div>
+            }
+        </div>
+        <div class="tab-pane" id="add" style="padding: 10px">
+            @using (Html.BeginForm("SaveProducer", "Home", FormMethod.Post, new { enctype = "multipart/form-data" , id="add-form"}))
+            { 
+                <div class="col-sm-5">
+                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Name" })
+
+                    @Html.DropDownListFor(x => x.LocationID, (List<SelectListItem>)ViewBag.List)
+                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                </div>
+            }
+
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+<script>
+    $(function () {
+        $('.nav-tabs').on('shown.bs.tab', function (e) {
+            var tab = e.target;
+            if (tab.id == "list-tab") {
+                var url = '@Url.Action("ProducersList", "Home", null, Request.Url.Scheme)';
+
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                }).success(function (data) {
+                    $('#list').empty();
+                    for (var i = 0; i < data.length ; ++i) {
+                        $('#list').prepend("<div>" + data[i].Name + "</div>");
+                    }
+                });
+            }
+        });
+
+        $('#add-form').submit(function (e) {
+            var url = '@Url.Action("SaveProducer", "Home", null, Request.Url.Scheme)';
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $("#add-form").serialize()
+            }).done(function (data) {
+                $('#add-form')[0].reset();
+                $('#add-form').find('input, textarea, button, select').attr("disabled", false);
+            });
+
+            $('#add-form').find('input, textarea, button, select').attr("disabled", true);
+
+            return false;
+        });
+    });
+</script>
